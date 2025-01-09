@@ -28,8 +28,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Fix Cypress permissions
+        run: chmod +x ./node_modules/.bin/cypress
+
       - name: Install Cypress
         run: npx cypress install
 
-      - name: Run Cypress tests
-        run: npx cypress run
+      - name: Run Cypress
+        uses: cypress-io/github-action@v5
+        with:
+          build: npm install
+          runTests: true
+
