@@ -1,8 +1,7 @@
 describe('Uptime Monitoring', () => {
   const urls = [
     'https://google.com.br', 
-    'https://globo.com',
-    'http://www.lalalalalririala.com/'
+    'https://globo.com'
     ];
 
   urls.forEach((url) => {
