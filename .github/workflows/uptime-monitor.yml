@@ -1,6 +1,7 @@
 name: Uptime Monitor
 
 on:
+  workflow_dispatch: # Permite execução manual
   schedule:
     - cron: '*/5 * * * *'
 
