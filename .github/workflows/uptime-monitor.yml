@@ -1,32 +1,35 @@
 name: Uptime Monitor
 
 on:
-  workflow_dispatch: # Permite execução manual
+  workflow_dispatch:
   schedule:
     - cron: '*/5 * * * *'
 
 jobs:
   cypress-run:
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-22.04
     steps:
-      - name: Checkout do código
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Configurar Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 22
+          node-version: '18'
 
-      - name: Instalar dependências
+      - name: Cache Cypress binary
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/Cypress
+          key: ${{ runner.os }}-cypress-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-cypress-
+
+      - name: Install dependencies
         run: npm install
 
-      - name: Fix Cypress permissions
-        run: chmod +x ./node_modules/.bin/cypress
+      - name: Install Cypress
+        run: npx cypress install
 
-
-      - name: Executar testes Cypress
+      - name: Run Cypress tests
         run: npx cypress run
-        env:
-          CYPRESS_EMAIL_USER: ${{ secrets.EMAIL_USER }}
-          CYPRESS_EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
